@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charlienet/gadget/misc/locker"
+	"github.com/charlienet/go-misc/locker"
 )
 
 type hash_set[T comparable] struct {
