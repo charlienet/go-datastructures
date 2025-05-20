@@ -58,7 +58,7 @@ func (s *hash_set[T]) Keys() []T {
 	defer s.l.RUnlock()
 
 	keys := make([]T, 0, len(s.m))
-	for k, _ := range s.m {
+	for k := range s.m {
 		keys = append(keys, k)
 	}
 
@@ -67,11 +67,9 @@ func (s *hash_set[T]) Keys() []T {
 
 func (s *hash_set[T]) Exists(i T) bool {
 	s.l.RLock()
+	defer s.l.RUnlock()
 
 	_, ok := s.m[i]
-
-	s.l.RUnlock()
-
 	return ok
 }
 
