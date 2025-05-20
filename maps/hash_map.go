@@ -5,12 +5,12 @@ import (
 	"iter"
 	"maps"
 
-	"github.com/charlienet/go-misc/locker"
+	"github.com/charlienet/go-datastructures/locker"
 )
 
 type hashmap[M ~map[K]V, K comparable, V any] struct {
 	m    M
-	l    locker.RWLocker
+	l    locker.Locker
 	sync bool
 }
 

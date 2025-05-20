@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charlienet/go-misc/locker"
+	"github.com/charlienet/go-datastructures/locker"
 )
 
 type hash_set[T comparable] struct {
 	m map[T]struct{}
-	l locker.RWLocker
+	l locker.Locker
 }
 
 func New[T comparable](values ...T) *hash_set[T] {
@@ -51,6 +51,18 @@ func (s *hash_set[T]) Remove(values ...T) *hash_set[T] {
 	s.l.Unlock()
 
 	return s
+}
+
+func (s *hash_set[T]) Keys() []T {
+	s.l.RLock()
+	defer s.l.RUnlock()
+
+	keys := make([]T, 0, len(s.m))
+	for k, _ := range s.m {
+		keys = append(keys, k)
+	}
+
+	return keys
 }
 
 func (s *hash_set[T]) Exists(i T) bool {
