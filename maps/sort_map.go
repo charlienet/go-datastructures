@@ -10,6 +10,8 @@ import (
 	"github.com/charlienet/go-datastructures/locker"
 )
 
+var _ Map[string, any] = (*SortedMap[string, any])(nil)
+
 type SortedMap[K cmp.Ordered, V any] struct {
 	sorted []K
 	m      map[K]V
@@ -52,6 +54,13 @@ func (s *SortedMap[K, V]) Delete(k K) {
 	delete(s.m, k)
 }
 
+func (s *SortedMap[K, V]) Count() int {
+	s.Lock()
+	defer s.Unlock()
+
+	return len(s.m)
+}
+
 func (s *SortedMap[K, V]) Asc() *SortedMap[K, V] {
 	s.Lock()
 	defer s.Unlock()
@@ -79,7 +88,7 @@ func (s *SortedMap[K, V]) Desc() *SortedMap[K, V] {
 	return s
 }
 
-func (s *SortedMap[K, V]) All() iter.Seq2[K, V] {
+func (s *SortedMap[K, V]) Iter() iter.Seq2[K, V] {
 	s.Lock()
 	defer s.Unlock()
 
